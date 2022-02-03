@@ -1,47 +1,47 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Dashboard from '../views/Dashboard.vue';
-import About from '../views/About.vue';
-import Login from '../views/Auth/Login.vue';
-import Register from '../views/Auth/Register.vue';
-import store from '@/store';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Articles from "../views/Articles/Index.vue";
+import EditArticle from "../views/Articles/EditArticle.vue";
+import Home from "../views/Home.vue";
+import OnlyRouterView from "@/components/OnlyRouterView";
+import Login from "../views/Auth/Login.vue";
+import Register from "../views/Auth/Register.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    beforeEnter: (to, from, next) => {
-      if(!store.getters['auth/authenticated']) {
-        return next({
-          name: 'Login'
-        })
-      }
-      next();
+    path: "/",
+    name: "Home",
+    component: Home,
+    redirect: { name: "Login" },
+  },
+  {
+    path: "/articles",
+    props: true,
+    name: "Articles",
 
-    }
+    component: Articles,
   },
   {
-    path: '/about',
-    name: 'About',
-    component: About,
+    path: "/edit/:slug",
+    name: "EditArticle",
+    component: EditArticle,
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: "/register",
+    name: "Register",
     component: Register,
   },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
