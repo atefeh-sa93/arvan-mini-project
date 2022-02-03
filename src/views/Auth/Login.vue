@@ -101,7 +101,7 @@ export default {
     login() {
       this.signIn(this.form).then(() => {
         this.snackbar = true;
-        this.$router.replace({ name: "Dashboard" }).catch(() => {});
+        this.$router.replace({ name: "Articles" }).catch(() => {});
       });
     },
   },
