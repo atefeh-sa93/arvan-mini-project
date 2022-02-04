@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Articles from "../views/Articles/Index.vue";
 import EditArticle from "../views/Articles/EditArticle.vue";
+import NewArticle from "../views/Articles/NewArticle.vue";
 import Home from "../views/Home.vue";
 import OnlyRouterView from "@/components/OnlyRouterView";
 import Login from "../views/Auth/Login.vue";
@@ -19,9 +20,20 @@ const routes = [
   {
     path: "/articles",
     props: true,
-    name: "Articles",
-
-    component: Articles,
+    component: OnlyRouterView,
+    children: [
+      {
+        path: "",
+        name: "Articles",
+        component: Articles,
+      },
+      
+    ]
+  },
+  {
+    path: "/create",
+    name: "NewArticle",
+    component: NewArticle,
   },
   {
     path: "/edit/:slug",

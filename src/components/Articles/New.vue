@@ -1,11 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      <h1>Edit Article</h1>
+      <h1>Create Article</h1>
     </v-row>
     <v-row>
       <v-col cols="9" md="9">
-        <v-form @submit.prevent="updateArticle">
+        <v-form @submit.prevent="createArticle">
           <v-text-field
             label="title"
             v-model="form.title"
@@ -61,7 +61,6 @@ export default {
   },
 
   mounted() {
-    this.getArticleData();
     this.getTagsData();
   },
 
@@ -72,12 +71,17 @@ export default {
   },
 
   methods: {
-    getArticleData() {
-      axios.get(`articles/${this.$route.params.slug}`).then((res) => {
-        const data = res.data.article;
-        this.form.title = data.title;
-        this.form.description = data.description;
-        this.form.body = data.body;
+    createArticle() {
+      axios.post('/articles', {article: this.form}, {
+          headers: {
+          'X-Requested-With':'XMLHttpRequest',
+          'Content-Type':'application/json',
+          'Authorization': `Token ${this.userInfo.token} `
+        }
+      }).then((result) => {
+        if(result.status === 200) {
+            this.$router.push({name: 'Articles'});
+        }
       });
     },
     getTagsData() {
@@ -85,19 +89,6 @@ export default {
         this.tags =res.data.tags.sort();
       });
     },
-    updateArticle() {
-      axios.put(`articles/${this.$route.params.slug}`, {article: this.form}, {
-        headers: {
-          'X-Requested-With':'XMLHttpRequest',
-          'Content-Type':'application/json',
-          'Authorization': `Token ${this.userInfo.token} `
-        }
-      }).then((result)=> {
-        if(result.status === 200) {
-          this.$router.push({name: 'Articles'});
-        }
-      })
-    }
   },
 };
 </script>

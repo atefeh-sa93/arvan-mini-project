@@ -1,7 +1,7 @@
 <template>
     <v-main>
         <Navbar :user-info="authenticated" />
-        <Single :user-info="authenticated"/>
+        <New :user-info="authenticated"/>
     </v-main>
 </template>
 
@@ -9,12 +9,12 @@
 <script>
 import { mapGetters } from "vuex";
 import Navbar from "../../components/Navbar.vue";
-import Single from '../../components/Articles/Single.vue'
+import New from '../../components/Articles/New.vue'
 
 export default {
-  name: "UpdateArticle",
+  name: "NewArticle",
 
-  components: { Navbar, Single },
+  components: { Navbar, New },
 
   computed: {
     ...mapGetters({
