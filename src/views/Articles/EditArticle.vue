@@ -12,7 +12,7 @@ import Navbar from "../../components/Navbar.vue";
 import Single from '../../components/Articles/Single.vue'
 
 export default {
-  name: "Articles",
+  name: "UpdateArticle",
 
   components: { Navbar, Single },
 
