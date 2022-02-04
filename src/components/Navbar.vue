@@ -3,7 +3,7 @@
     <v-toolbar color="#373A3C" flat>
       <v-toolbar-title>
         <span class="font-wight-bold white--text">Arvan Challenge</span>
-        <span class="ml-5 text-subtitle-2 white--text"
+        <span class="ml-5 text-subtitle-2 white--text" v-if="userInfo"
           >Welcome {{ userInfo.username }}</span
         >
       </v-toolbar-title>
@@ -42,7 +42,7 @@ export default {
     return {
       navigationItems: [
         { title: "All Articles", routerName: "Articles" },
-        { title: "New Article", routerName: "Login" },
+        { title: "New Article", routerName: "NewArticle" },
       ],
     };
   },
