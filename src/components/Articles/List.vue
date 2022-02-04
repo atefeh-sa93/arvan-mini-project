@@ -5,19 +5,32 @@
       <v-col cols="12" md="12">
         <v-data-table
           :headers="headers"
-          :items="articles"
+          :items="articlesListDetail"
           :page.sync="page"
           :items-per-page="itemsPerPage"
           hide-default-footer
           class="elevation-1"
           @page-count="pageCount = $event"
-          @click:row="goToEditPage"
         >
           <template v-slot:[`item.actions`]="{ item }">
             <v-icon small class="mr-2" @click="goToEditPage(item.slug)">
               mdi-pencil
             </v-icon>
-            <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            <v-icon large @click="deleteItem(item.slug)"> mdi-delete </v-icon>
+            <v-snackbar v-model="snackbar">
+              {{ text }}
+
+              <template v-slot:action="{ attrs }">
+                <v-btn
+                  color="pink"
+                  text
+                  v-bind="attrs"
+                  @click="snackbar = false"
+                >
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
           </template>
         </v-data-table>
         <div class="text-center pt-2">
@@ -33,6 +46,7 @@
 import axios from "axios";
 
 export default {
+  name: 'List',
   data() {
     return {
       page: 1,
@@ -77,23 +91,37 @@ export default {
         },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      articles: [],
+      snackbar: false,
+      text: `Hello, I'm a snackbar`,
     };
   },
 
-  mounted() {
-    this.fetchArticlesList();
+  props: {
+    articlesListDetail: {
+      type: Array,
+    },
+    userInfo: {
+      type: Object,
+    },
   },
 
   methods: {
-    async fetchArticlesList() {
-      await axios.get("/articles").then((result) => {
-        this.articles = result.data.articles;
-      });
-    },
     goToEditPage(item) {
-        this.$router.push({name: 'EditArticle', params: {slug: item.slug}});
-    }
+      this.$router.push({ name: "EditArticle", params: { slug: item } });
+    },
+    deleteItem(item) {
+      axios.delete(`articles/${item}`, {
+        headers: {
+          'X-Requested-With':'XMLHttpRequest',
+          'Content-Type':'application/json',
+          'Authorization': `Token ${this.userInfo.token} `
+        }
+      }).then((result)=> {
+        if(result.status === 200) {
+          this.$router.push({name: 'Articles'});
+        }
+      })
+    },
   },
 };
 </script>
